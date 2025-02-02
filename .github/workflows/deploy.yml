@@ -34,7 +34,8 @@ jobs:
           sudo systemctl status nginx.service
           sudo journalctl -xeu nginx.service
 
-      - name: Get Nginx logs
-        run: |
-          sudo tail -n 50 /var/log/nginx/error.log
-          sudo tail -n 50 /var/log/nginx/access.log
+      - name: Get Nginx error log
+        run: sudo tail -n 50 /var/log/nginx/error.log
+
+      - name: Get Nginx access log
+        run: sudo tail -n 50 /var/log/nginx/access.log
