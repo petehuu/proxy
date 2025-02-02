@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proxy Test</title>
+    <script>
+        async function testProxy() {
+            try {
+                const response = await fetch('https://your-github-username.github.io/proxy-repo/proxy?action_route=Coordinates&lat=59.977763368096134&lon=24.397211177578832&srs=EPSG:4326&targetSRS=EPSG:3067', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                document.getElementById('result').innerText = JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('result').innerText = 'Error: ' + error;
+            }
+        }
+        window.onload = testProxy;
+    </script>
+</head>
+<body>
+    <h1>Proxy Test</h1>
+    <pre id="result">Loading...</pre>
+</body>
+</html>
