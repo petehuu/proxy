@@ -37,9 +37,9 @@ jobs:
       - name: Get Nginx error log
         run: |
           echo "Nginx Error Log:"
-          sudo tail -n 50 /var/log/nginx/error.log
+          sudo tail -n 50 /var/log/nginx/proxy_error.log
 
       - name: Get Nginx access log
         run: |
           echo "Nginx Access Log:"
-          sudo tail -n 50 /var/log/nginx/access.log
+          sudo tail -n 50 /var/log/nginx/proxy_access.log
