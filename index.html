@@ -11,9 +11,14 @@
                     method: 'GET',
                     mode: 'no-cors'
                 });
-                
-                // Display successful message
-                document.getElementById('result').innerText = 'Request sent successfully';
+
+                // Varmistetaan, että pyyntö onnistui
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const textData = await response.text();
+                document.getElementById('result').innerText = textData;
             } catch (error) {
                 document.getElementById('result').innerText = 'Error: ' + error.message;
             }
