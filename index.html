@@ -13,10 +13,6 @@
                 });
 
                 // Varmistetaan, että pyyntö onnistui
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
                 const textData = await response.text();
                 document.getElementById('result').innerText = textData;
             } catch (error) {
