@@ -23,7 +23,8 @@
                     const data = await response.json();
                     document.getElementById('result').innerText = JSON.stringify(data, null, 2);
                 } else {
-                    throw new Error('Received non-JSON response');
+                    const textData = await response.text();
+                    document.getElementById('result').innerText = textData;
                 }
             } catch (error) {
                 document.getElementById('result').innerText = 'Error: ' + error.message;
