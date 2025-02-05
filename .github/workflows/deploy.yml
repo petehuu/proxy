@@ -31,6 +31,11 @@ jobs:
         run: |
           echo "Nginx Service Status:"
           sudo systemctl status nginx.service
+
+      - name: Get Nginx detailed logs
+        if: failure()
+        run: |
+          echo "Nginx Detailed Logs:"
           sudo journalctl -xeu nginx.service
 
       - name: Get Nginx error log
