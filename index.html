@@ -7,24 +7,22 @@
     <script>
         async function testProxy() {
             try {
-                const response = await fetch('/proxy/?action_route=Coordinates&lat=59.977763368096134&lon=24.397211177578832&srs=EPSG:4326&targetSRS=EPSG:3067', {
+                const response = await fetch('/proxy/?api-key=7cd2ddae-9f2e-481c-99d0-404e7bc7a0b2&service=WCS&version=2.0.1&request=GetCoverage&CoverageID=korkeusmalli_2m&SUBSET=E(354468,354472)&SUBSET=N(6650556,6650560)&format=text/plain', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json'
                     }
                 });
 
+                const text = await response.text();
+                console.log("Raw response:", text);
+
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
 
-                const contentType = response.headers.get("content-type");
-                if (contentType && contentType.includes("application/json")) {
-                    const data = await response.json();
-                    document.getElementById('result').innerText = JSON.stringify(data, null, 2);
-                } else {
-                    throw new Error('Received non-JSON response');
-                }
+                // Display the raw response text
+                document.getElementById('result').innerText = text;
             } catch (error) {
                 document.getElementById('result').innerText = 'Error: ' + error.message;
             }
