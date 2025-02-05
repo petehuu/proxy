@@ -37,6 +37,11 @@ jobs:
         echo "Nginx Error Log:"
         sudo tail -n 50 /var/log/nginx/error.log
 
+    - name: Get Nginx access log
+      run: |
+        echo "Nginx Access Log:"
+        sudo tail -n 50 /var/log/nginx/access.log
+
     - name: Verify server is running and log output
       run: |
         curl -I http://localhost || { echo "Failed to connect to server"; exit 1; }
