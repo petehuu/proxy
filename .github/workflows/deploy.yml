@@ -49,6 +49,10 @@ jobs:
           echo "Nginx Access Log:"
           sudo tail -n 50 /var/log/nginx/access.log
 
+      - name: Check if port 8080 is in use
+        run: |
+          sudo lsof -i :8080
+
       - name: Check Nginx configuration file permissions
         run: |
           ls -l /etc/nginx/nginx.conf
