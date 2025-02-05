@@ -1,7 +1,9 @@
 name: Deploy Proxy
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   deploy:
@@ -29,10 +31,17 @@ jobs:
       - name: Get Nginx service status
         if: failure()
         run: |
+          echo "Nginx Service Status:"
           sudo systemctl status nginx.service
+
+      - name: Get Nginx detailed logs
+        if: failure()
+        run: |
+          echo "Nginx Detailed Logs:"
           sudo journalctl -xeu nginx.service
 
       - name: Get Nginx error log
+        if: failure()
         run: |
           echo "Nginx Error Log:"
           sudo tail -n 50 /var/log/nginx/error.log
