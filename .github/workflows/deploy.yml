@@ -57,8 +57,3 @@ jobs:
       - name: Check Nginx service permissions
         run: |
           sudo systemctl cat nginx.service
-
-      - name: Reinstall Nginx
-        run: |
-          sudo apt remove -y nginx
-          sudo apt install -y nginx
