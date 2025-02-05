@@ -12,16 +12,15 @@
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
-                    },
-                    mode: 'no-cors'
+                    }
                 });
-
-                const text = await response.text();
-                console.log("Raw response:", text);
 
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
+
+                const text = await response.text();
+                console.log("Raw response:", text);
 
                 // Display the raw response text
                 document.getElementById('result').innerText = text;
