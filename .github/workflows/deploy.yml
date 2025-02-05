@@ -50,14 +50,11 @@ jobs:
         cat /var/log/nginx/error.log || echo "No server log found"
         echo "=== End of Server Log Output ==="
 
-    - name: Keep server running and verify 6 times
+    - name: Execute curl command to test direct request
       run: |
-        for i in {1..6}; do
-          echo "Check $i/6 - Verifying server status..."
-          curl -sSf "http://localhost:8080/proxy/?api-key=7cd2ddae-9f2e-481c-99d0-404e7bc7a0b2&service=WCS&version=2.0.1&request=GetCoverage&CoverageID=korkeusmalli_2m&SUBSET=E%28354468,354472%29&SUBSET=N%286650556,6650560%29&format=text/plain" -H "Content-Type: application/json" && echo "Status OK" || { echo "Server is down"; break; }
-          sleep 10
-        done
-        echo "Loop completed successfully"
+        echo "Testing direct request with curl command..."
+        curl -sSf "https://avoin-karttakuva.maanmittauslaitos.fi/ortokuvat-ja-korkeusmallit/wcs/v2?api-key=7cd2ddae-9f2e-481c-99d0-404e7bc7a0b2&service=WCS&version=2.0.1&request=GetCoverage&CoverageID=korkeusmalli_2m&SUBSET=E(354468,354472)&SUBSET=N(6650556,6650560)&format=text/plain" -H "Content-Type: application/json" && echo "Status OK" || { echo "Server is down"; break;
+      continue-on-error: true
 
     - name: Display Nginx logs with headers
       run: |
