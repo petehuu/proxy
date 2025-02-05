@@ -23,6 +23,13 @@
 
                 // Display the raw response text
                 document.getElementById('result').innerText = text;
+
+                // Extract the last two lines from the response text
+                const lines = text.trim().split('\n');
+                const lastTwoLines = lines.slice(-2).join('\n');
+
+                // Display the extracted lines
+                document.getElementById('result').innerText += `\n\nExtracted Data:\n${lastTwoLines}`;
             } catch (error) {
                 document.getElementById('result').innerText = 'Error: ' + error.message;
             }
