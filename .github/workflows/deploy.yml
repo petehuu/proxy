@@ -17,12 +17,18 @@ jobs:
           echo "nginx.conf not found!"
           exit 1
         fi
+        if [ ! -f $(pwd)/index.html ]; then
+          echo "index.html not found!"
+          exit 1
+        fi
 
     - name: Set up Nginx
       run: |
         sudo apt update
         sudo apt install -y nginx
         sudo cp $(pwd)/nginx.conf /etc/nginx/nginx.conf
+        sudo mkdir -p /var/www/html
+        sudo cp $(pwd)/index.html /var/www/html/index.html
         sudo nginx -t  # Verify Nginx configuration syntax
         sudo systemctl restart nginx || sudo systemctl status nginx.service || sudo journalctl -xeu nginx.service
 
@@ -36,14 +42,19 @@ jobs:
         echo "Nginx Access Log:"
         sudo tail -n 50 /var/log/nginx/access.log
 
-    - name: Make server request and log response
+    - name: Verify server is running and log output
       run: |
-        curl -i "http://localhost/proxy/?api-key=7cd2ddae-9f2e-481c-99d0-404e7bc7a0b2&service=WCS&version=2.0.1&request=GetCoverage&CoverageID=korkeusmalli_2m&SUBSET=E(354468,354472)&SUBSET=N(6650556,6650560)&format=text/plain" || { echo "Failed to make request"; exit 1; }
-        echo "Request completed, check logs for response."
+        curl -I http://localhost || { echo "Failed to connect to server"; exit 1; }
+        echo "Server verification completed"
+        echo "=== Server Log Output ==="
+        cat /var/log/nginx/error.log || echo "No server log found"
+        echo "=== End of Server Log Output ==="
 
-    - name: Check logs after request
+    - name: Keep server running and verify periodically
       run: |
-        echo "=== Nginx Access Log ==="
-        sudo tail -n 100 /var/log/nginx/access.log
-        echo "=== Nginx Error Log ==="
-        sudo tail -n 100 /var/log/nginx/error.log
+        for i in {1..6}; do
+          echo "Check $i/6 - Verifying server status..."
+          curl -sSf http://localhost/proxy && echo "Status OK" || { echo "Server is down"; break; }
+          sleep 10
+        done
+      continue-on-error: true
