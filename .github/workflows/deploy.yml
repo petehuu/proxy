@@ -48,3 +48,20 @@ jobs:
         run: |
           echo "Nginx Access Log:"
           sudo tail -n 50 /var/log/nginx/access.log
+
+      - name: Check if port 8080 is in use
+        run: |
+          sudo lsof -i :8080
+
+      - name: Check Nginx configuration file permissions
+        run: |
+          ls -l /etc/nginx/nginx.conf
+
+      - name: Check Nginx service permissions
+        run: |
+          sudo systemctl cat nginx.service
+
+      - name: Reinstall Nginx
+        run: |
+          sudo apt remove -y nginx
+          sudo apt install -y nginx
