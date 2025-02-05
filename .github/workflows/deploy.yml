@@ -38,20 +38,17 @@ jobs:
           echo "Nginx Detailed Logs:"
           sudo journalctl -xeu nginx.service
 
-      - name: Get Nginx error log
+      - name: Get Full Nginx Error Log
         if: failure()
         run: |
           echo "Nginx Error Log:"
-          sudo tail -n 50 /var/log/nginx/error.log
+          sudo tail -n 200 /var/log/nginx/error.log
 
-      - name: Get Nginx access log
+      - name: Get System Journal Logs
+        if: failure()
         run: |
-          echo "Nginx Access Log:"
-          sudo tail -n 50 /var/log/nginx/access.log
-
-      - name: Check if port 8080 is in use
-        run: |
-          sudo lsof -i :8080
+          echo "System Journal Logs:"
+          sudo journalctl -xe
 
       - name: Check Nginx configuration file permissions
         run: |
