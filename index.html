@@ -10,8 +10,9 @@
                 const response = await fetch('http://localhost:8080/proxy/?api-key=7cd2ddae-9f2e-481c-99d0-404e7bc7a0b2&service=WCS&version=2.0.1&request=GetCoverage&CoverageID=korkeusmalli_2m&SUBSET=E(354468,354472)&SUBSET=N(6650556,6650560)&format=text/plain', {
                     method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+                        'Access-Control-Allow-Headers': 'Origin, Content-Type, Accept, Authorization'
                     }
                 });
 
@@ -32,6 +33,7 @@
                 // Display the extracted lines
                 document.getElementById('result').innerText += `\n\nExtracted Data:\n${lastTwoLines}`;
             } catch (error) {
+                console.error('Fetch error:', error);
                 document.getElementById('result').innerText = 'Error: ' + error.message;
             }
         }
